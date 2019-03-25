@@ -29,8 +29,13 @@ describe('AppointmentsDayView', () => {
   let container;
   const today = new Date();
   const appointments = [
-    { startsAt: today.setHours(12, 0) },
-    { startsAt: today.setHours(13, 0) }
+    {
+      startsAt: today.setHours(12, 0),
+      customer: { firstName: 'Ashley'}
+    },
+    { startsAt: today.setHours(13, 0),
+      customer: { firstName: 'Ashley'}
+    }
   ];
 
   beforeEach(() => {
@@ -39,16 +44,27 @@ describe('AppointmentsDayView', () => {
 
   const render = component => ReactDOM.render(component, container);
 
-  it('initially shows a messafe saying there are no appointments today', () => {
+  it('initially shows a message saying there are no appointments today', () => {
       render(<AppointmentsDayView appointments={[]} />);
       expect(container.textContent).toMatch(
         'There are no appointments scheduled for today.'
-      )
+      );
   });
 
   it('renders a div with the right id', () => {
     render(<AppointmentsDayView appointments={[]} />);
     expect(container.querySelector('div#appointmentsDayView')).not.toBeNull();
+  });
+
+  it('selects the first appointment by default', () => {
+    render(<AppointmentsDayView appointments={appointments} />);
+    expect(container.textContent).toMatch('Ashley');
+  });
+
+  it('has a button element in each li', () => {
+    render(<AppointmentsDayView appointments={appointments} />);
+    expect(container.querySelectorAll('li > button')).toHaveLength(2);
+    expect(container.querySelectorAll('li > button')[0].type).toEqual('button');
   });
 
   it('renders multiple appointments in an ol element', () => {
