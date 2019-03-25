@@ -39,6 +39,13 @@ describe('AppointmentsDayView', () => {
 
   const render = component => ReactDOM.render(component, container);
 
+  it('initially shows a messafe saying there are no appointments today', () => {
+      render(<AppointmentsDayView appointments={[]} />);
+      expect(container.textContent).toMatch(
+        'There are no appointments scheduled for today.'
+      )
+  });
+
   it('renders a div with the right id', () => {
     render(<AppointmentsDayView appointments={[]} />);
     expect(container.querySelector('div#appointmentsDayView')).not.toBeNull();
